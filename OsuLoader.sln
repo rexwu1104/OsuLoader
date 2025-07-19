@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OsuLoader", "OsuLoader.csproj", "{87A2034F-4DDC-487E-8D31-ECC080AB9958}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{87A2034F-4DDC-487E-8D31-ECC080AB9958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87A2034F-4DDC-487E-8D31-ECC080AB9958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87A2034F-4DDC-487E-8D31-ECC080AB9958}.Release|Any CPU.ActiveCfg = Release|Win32
+		{87A2034F-4DDC-487E-8D31-ECC080AB9958}.Release|Any CPU.Build.0 = Release|Win32
+	EndGlobalSection
+EndGlobal

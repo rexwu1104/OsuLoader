@@ -1,0 +1,9 @@
+﻿*.config
+
+.idea
+bin
+obj
+packages
+Properties
+Fody*
+OsuLoader.sln.DotSettings.user
