@@ -1,9 +1,11 @@
 ﻿#nullable enable
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using System.Threading;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using osu_common;
 using osu;
@@ -26,6 +28,8 @@ public static class OsuManager
     private static ushort _currentPerfect;
     private static ushort _currentGood;
     private static ushort _currentMisses;
+    
+    internal static List<Keys> _keepPressedKeys = new();
 
     private static object StateManger
     {
@@ -47,6 +51,14 @@ public static class OsuManager
         }
     }
 
+    private static Vector2 TransformPosition(Vector2 position)
+    {
+        var type = LoaderMain.OsuAssembly.GetType("#=zdEqWFlrNfRD97Tqz0Q==");
+        var field = Reflector.GetStaticField<object>(type, "#=zwYyy9Y2uYl$5");
+        var result = Reflector.CallMethod<Vector2>(field, "#=zxNc4ZyAbDHNb", position);
+        return result;
+    }
+
     public static OsuModes CurrentPlayMode =>
         Reflector.GetStaticField<OsuModes>(mainForm.GetType(), "#=zNhmtVIU=");
 
@@ -65,9 +77,40 @@ public static class OsuManager
         }
     }
 
+    public static void MoveMouse(Vector2 position)
+    {
+        var type = LoaderMain.OsuAssembly.GetType("#=zd67Vp1YN0U1ubMsGhQ==");
+        Reflector.SetStaticField(type, "#=zUInTg9oi8M61", position);
+        Reflector.SetStaticField(type, "#=znb$YZO4mzuMMNqNOJE4nVus=", TransformPosition(position));
+    }
+
+    public static void KeepingPressKeyBoard(Keys key)
+    {
+        _keepPressedKeys.Add(key);
+    }
+
+    public static void ReleasePressingKeyBoard(Keys key)
+    {
+        _keepPressedKeys.Remove(key);
+    }
+
     public static void PressKeyBoard(Keys key)
     {
         MainPatch.KeysQueue.Add(key);
+    }
+
+    public static void KeepingPressKeyBinding(object binding)
+    {
+        var type = LoaderMain.OsuAssembly.GetType("#=zNywshvqVt1sGrY2HKQ==");
+        var result = Reflector.CallStaticMethod<Keys>(type, "#=zQKXvVUE=", binding);
+        KeepingPressKeyBoard(result);
+    }
+
+    public static void ReleasePressingKeyBinding(object binding)
+    {
+        var type = LoaderMain.OsuAssembly.GetType("#=zNywshvqVt1sGrY2HKQ==");
+        var result = Reflector.CallStaticMethod<Keys>(type, "#=zQKXvVUE=", binding);
+        ReleasePressingKeyBoard(result);
     }
 
     public static void PressKeyBinding(object binding)
@@ -93,6 +136,9 @@ public static class OsuManager
 
         while (true)
         {
+            if (_keepPressedKeys.Count > 0 && CurrentPlayMode != OsuModes.Play)
+                _keepPressedKeys.Clear();
+            
             Thread.Sleep(10);
         }
     }

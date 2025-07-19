@@ -19,6 +19,19 @@ namespace OsuLoader
             return (T)field?.GetValue(null);
         }
 
+        internal static void SetField(object source, string name, object value)
+        {
+            var type = source.GetType();
+            var field = type.GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+            field?.SetValue(source, value);
+        }
+
+        internal static void SetStaticField(Type source, string name, object value)
+        {
+            var field = source.GetField(name, BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+            field?.SetValue(null, value);
+        }
+
         internal static T CallMethod<T>(object source, string methodName, params object[] parameters)
         {
             var type = source.GetType();

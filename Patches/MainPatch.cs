@@ -108,6 +108,7 @@ public class MainPatch
     [HarmonyPrefix, HarmonyPatch("#=zd67Vp1YN0U1ubMsGhQ==", "#=zGbjhAMY=")]
     static void KeyInputInject(List<Keys> __0)
     {
+        __0.AddRange(OsuManager._keepPressedKeys);
         __0.AddRange(KeysQueue);
         KeysQueue.Clear();
     }

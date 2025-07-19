@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using osu;
 
@@ -43,12 +44,24 @@ public class WebsocketCommand
                 OsuManager.PressKeyBoard(Keys.Enter);
                 break;
             case "move":
+                if (_parameters.Count != 2)
+                    return false;
+                OsuManager.MoveMouse(new Vector2(_parameters[0].AsNumber().Float, _parameters[1].AsNumber().Float));
                 break;
             case "press":
+                if (OsuManager.CurrentPlayMode != OsuModes.Play)
+                    return false;
+                OsuManager.KeepingPressKeyBinding(OsuManager.KeyBindings.Instance[_parameters[0].AsString().Value]);
                 break;
             case "release":
+                if (OsuManager.CurrentPlayMode != OsuModes.Play)
+                    return false;
+                OsuManager.ReleasePressingKeyBinding(OsuManager.KeyBindings.Instance[_parameters[0].AsString().Value]);
                 break;
             case "restart":
+                if (OsuManager.CurrentPlayMode != OsuModes.Play)
+                    return false;
+                OsuManager.PressKeyBinding(OsuManager.KeyBindings.Instance["QuickRetry"]);
                 break;
         }
         
